@@ -6,6 +6,7 @@
 import pbs
 
 # create a PBS Job appropriate for the prismsprojectdebug_flux queue
+j = pbs.job.PrismsDebugJob(nodes="2", command="echo \"hello\" > test.txt")
 j = pbs.PrismsDebugJob(nodes="2", command="echo \"hello\" > test.txt")
 
 # other options are: PrismsJob(), NonPrismsJob(), PrismsSpecialJob() and PrismsPriorityJob()
