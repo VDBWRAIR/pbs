@@ -61,7 +61,7 @@ def get_cmd_spec(module):
     elif module == "ngs_mapper_sheet":
          pass
     else:
-         return {'inner_cmd' : edit()} #open vim
+        return {'inner_cmd' : edit(), 'vars' : []} #open vim
 
 prologue = '''module load {0}'''
 #epilogue = '''cp -R ./ \${PBS_O_WORKDIR}/\${PBS_JOBID}'''
@@ -170,3 +170,6 @@ def edit():
                 pass
 
 
+
+if __name__ == "__main__":
+    run_and_create_job()
