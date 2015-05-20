@@ -6,6 +6,8 @@ from itertools import starmap, ifilterfalse, chain
 from operator import methodcaller
 from func import compose,  typecheck, dictzip, _or
 import job
+import readline
+
 #TODO: properly segregate I/O
 #TODO: put modules list in config.yaml?
 
@@ -41,6 +43,7 @@ SAMPLEDIR=/media/VD_Research/NGSData/ReadsBySample/${SAMPLENAME}
 TMPDIR=$(pwd)/tmp runsample.py $SAMPLEDIR {REFPATH} {SAMPLENAME} -od {SAMPLENAME}
 '''
 
+readline.parse_and_bind("tab: complete")
 prompt = compose(raw_input, "{0}>".format)
 def getvar(varname):
     return os.environ.get(varname, None) or prompt(varname)
