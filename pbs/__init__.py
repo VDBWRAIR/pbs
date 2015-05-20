@@ -5,7 +5,6 @@ from misc import *
 from templates import *
 from custom import *
 __all__ = dir()
-
 __version__ = '1.1.0'
 __release__ = __version__ + '-dev'
 __authors__ = 'Brian Puchala, Tyghe Vallard, Michael panciera'
