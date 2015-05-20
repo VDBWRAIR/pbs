@@ -4,7 +4,7 @@ import pbs
 
 # functions
 
-def select_job(args):
+def select_job(args, db):
     """ Select which jobs to operate on """
     if args.all:
         job = db.select_all_id()
@@ -33,7 +33,7 @@ def select_job(args):
         return job
 
 
-def operate(args, check_eligibility, operation, summary_msg, prompt_msg, action_msg):
+def operate(args, check_eligibility, operation, summary_msg, prompt_msg, action_msg, db):
     """ Perform an operation on some jobs.
     
         Args:
@@ -95,7 +95,7 @@ def operate(args, check_eligibility, operation, summary_msg, prompt_msg, action_
             operation(job = j)
 
 
-def print_data(args):
+def print_data(args, db):
     # user defined selection (don't show untracked)
     jobid = select_job(args)
     if jobid != []:
@@ -129,7 +129,7 @@ def print_data(args):
                     print e
 
 
-def print_jobs(args):
+def print_jobs(args, db):
     if args.all and not args.active:
         # 'pstat --all' case
         #    show all and untracked
@@ -253,46 +253,46 @@ def main():
                 db.complete_job, \
                 "Jobs to be mark completed:", \
                 "Are you sure you want to mark the above jobs completed? (yes/no): ", \
-                "Marking job complete:")
+                "Marking job complete:",db)
     elif args.cont:
         operate(args, \
                 db.eligible_to_continue, \
                 db.continue_job, \
                 "Jobs to be continued:", \
                 "Are you sure you want to continue the above jobs? (yes/no): ", \
-                "Continuing job:")
+                "Continuing job:",db)
     elif args.reset:
         operate(args, \
                 db.eligible_to_reset, \
                 db.reset_job, \
                 "Jobs to be reset:", \
                 "Are you sure you want to reset the above jobs? (yes/no): ", \
-                "Resetting job:")
+                "Resetting job:",db)
     elif args.abort:
         operate(args, \
                 db.eligible_to_abort, \
                 db.abort_job, \
                 "Jobs to be aborted:", \
                 "Are you sure you want to abort the above jobs? (yes/no): ", \
-                "Aborting job:")
+                "Aborting job:",db)
     elif args.delete:
         operate(args, \
                 db.eligible_to_delete, \
                 db.delete_job, \
                 "Jobs to be deleted:", \
                 "Are you sure you want to delete the above jobs? (yes/no): ", \
-                "Deleting job:")
+                "Deleting job:",db)
     elif args.error:
         operate(args, \
                 db.eligible_to_error, \
                 db.error_job, \
                 "Jobs to be marked with an error:", \
                 "Are you sure you want to mark the above jobs with an error? (yes/no): ", \
-                "Marking job with an error:")
+                "Marking job with an error:",db)
     elif args.key:
-        print_data(args)
+        print_data(args,db)
     else:
-        print_jobs(args)
+        print_jobs(args,db)
 
     # close the database
     db.close()
