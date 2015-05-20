@@ -68,14 +68,8 @@ Jobs not marked 'auto' are shown with the status "Check" in 'pstat' until the us
 
 2. From the root directory of the repository:
 
-        make install
-
-    You might need to set the following environment variables:
-    	
-    - BIN: This specifies where the scripts ``pstat``, ``psub``, and ``taskmaster`` will be installed. If not set, the default location is ``/usr/local/bin``
-    	
-    - PYINSTALL: This specifies where to install the Python package ``pbs``. If not set, it uses the default distutils location.
-
+        pip install -r requirements.txt
+        python setup.py install
 
 ** Note for flux users: ** 
 
@@ -241,4 +235,6 @@ License as published by the Free Software Foundation; either version
 
 Please see the file LICENSE for details.
 
+## Changelog
 
+See [Changelog](CHANGELOG.rst)
