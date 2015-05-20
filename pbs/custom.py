@@ -75,9 +75,10 @@ wrap_cmd = (prologue + '\n{1}\n' + epilogue).format
 pbs_defaults = {
     'name' : 'STDIN',
     'nodes' : 1,
-    'ppn' : '16',
+    'ppn' : '1',
     'walltime' : "1:00:00",
     'pmem' : "3800mb",
+    'queue' : 'batch',
     'exetime' : None,
     'message' : "a",
     'email' : None,
@@ -96,7 +97,7 @@ def create_command(module_type):
     else:
           return inner_cmd
 
-opts = ['name', 'nodes', 'ppn', 'walltime', 'pmem', 'message', 'exetime', 'email', 'auto']
+opts = ['name', 'nodes', 'ppn', 'walltime', 'pmem', 'message', 'exetime', 'email', 'auto', 'queue']
 option_with_default = _or(getvar, pbs_defaults.__getitem__)
 
 def make_job_dict():

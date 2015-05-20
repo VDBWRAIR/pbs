@@ -3,7 +3,10 @@ import mock
 #from pbs import custom
 from custom import make_job_dict, create_command, select_interactive_menu, module_job
 envs = ('bxml', 'beagle_GPU')
-choices = ['6', 'Aname', '3', '', '', '', '', '', 'user@email', '', 'bxml', 'beagle_GPU']
+choices = ['2', 'Aname', '3', '', '', '', '', '', 'user@email', '', '', 'bxml', 'beagle_GPU']
+
+def Raise():
+     raise OSError('foo')
 
 
 class TestCustomJobSystem(unittest.TestCase):
@@ -30,17 +33,19 @@ cp -R ./ \$PBS_O_WORKDIR/\$PBS_JOBID'''
         #actual = j.command
         self.assertMultiLineEqual(self.expected_beast, actual)
 
+    @mock.patch("custom.raw_modules", side_effect=Raise)
     @mock.patch("custom.prompt", side_effect=choices)
-    def test_full_job_command_dict_rawinput(self, minput):
+    def test_full_job_command_dict_rawinput(self, _, __):
         expected = {
         'name' : 'Aname',
         'nodes' : '3',
-        'ppn' : '16',
+        'ppn' : '1',
         'pmem' : "3800mb",
         'walltime' : "1:00:00",
         'exetime' : None,
         'message' : "a",
         'email' : 'user@email',
+        'queue' : 'batch',
         'command' : self.expected_beast,
         'auto' : False
     }
@@ -48,8 +53,9 @@ cp -R ./ \$PBS_O_WORKDIR/\$PBS_JOBID'''
         actual = make_job_dict()
         self.assertEquals(expected, actual)
 
+    @mock.patch("custom.raw_modules", side_effect=Raise)
     @mock.patch("custom.prompt", side_effect=choices)
-    def test_full_job_command_job_created(self, minput):
+    def test_full_job_command_job_created(self, _, __):
         #with mock.patch('__builtin__.raw_input', side_effect=choices()):
         job = module_job()
         self.assertEquals('Aname', job.name)
@@ -68,4 +74,3 @@ cp -R ./ \$PBS_O_WORKDIR/\$PBS_JOBID'''
             result = select_interactive_menu(choices)
             self.assertEquals('c', result)
 
-#foo
