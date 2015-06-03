@@ -7,6 +7,7 @@ from operator import methodcaller
 from func import compose,  typecheck, dictzip, _or
 import job
 import readline
+from glob import glob
 
 #TODO: properly segregate I/O
 #TODO: put modules list in config.yaml?
@@ -42,8 +43,19 @@ mkdir -p $(pwd)/tmp
 SAMPLEDIR=/media/VD_Research/NGSData/ReadsBySample/${SAMPLENAME}
 TMPDIR=$(pwd)/tmp runsample.py $SAMPLEDIR {REFPATH} {SAMPLENAME} -od {SAMPLENAME}
 '''
+expand_path = compose(os.path.realpath, os.path.expanduser) 
 
+''' Tab completion for directories ''' 
+def glob_complete(text, state):
+    expanded_text = expand_path(text)
+    if os.path.isdir(expanded_text):
+        expanded_text += '/'
+    return (glob(expanded_text+'*')+[None])[state]
+
+readline.set_completer_delims(' \t\n;')
 readline.parse_and_bind("tab: complete")
+readline.set_completer(glob_complete)
+
 prompt = compose(raw_input, "{0}>".format)
 def getvar(varname):
     return os.environ.get(varname, None) or prompt(varname)
